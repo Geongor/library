@@ -9,9 +9,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class MainController {
 
-    @GetMapping("/main")
+    @GetMapping("/")
     public String greeting(Model model) {
 
-        return "game_page";
+        return "index";
     }
 }
