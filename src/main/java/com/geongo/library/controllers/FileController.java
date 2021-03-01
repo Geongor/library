@@ -1,6 +1,8 @@
 package com.geongo.library.controllers;
 
+import com.geongo.library.entity.Book;
 import com.geongo.library.services.AmazonClient;
+import com.geongo.library.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,14 +20,25 @@ public class FileController {
     private AmazonClient amazonClient;
 
     @Autowired
+    BookService bookService;
+    /*
+    @Autowired
     FileController(AmazonClient amazonClient) {
         this.amazonClient = amazonClient;
     }
+    */
 
 
     @PostMapping("/add_book")
-    public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
-        this.amazonClient.uploadFile(file);
+    public String uploadFile(@RequestPart(value = "file") MultipartFile file,
+                             @RequestPart(value = "image") MultipartFile image,
+                             @RequestParam(value = "name") String name,
+                             @RequestParam(value = "author") String author) {
+
+        Book book = new Book(name, author);
+        bookService.saveBook(book, file, image);
+
+        //this.amazonClient.uploadFile(file);
         return "add_book";
     }
 
