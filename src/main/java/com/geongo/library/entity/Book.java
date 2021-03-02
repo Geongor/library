@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.File;
 
 @Entity
 @Table(name = "books")
@@ -15,6 +17,10 @@ public class Book {
     @Id
     private String filePath;
     private String imagePath;
+    @Transient
+    private File image;
+    @Transient
+    private File file;
 
     public Book() {
     }
@@ -56,5 +62,21 @@ public class Book {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public File getImage() {
+        return image;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 }

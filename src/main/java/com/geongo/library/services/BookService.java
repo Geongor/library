@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service()
 public class BookService {
 
@@ -27,5 +29,9 @@ public class BookService {
         bookRepository.save(book);
 
         return true;
+    }
+
+    public List<Book> getAllBooks(){
+        return bookRepository.findAll();
     }
 }

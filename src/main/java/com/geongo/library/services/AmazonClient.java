@@ -65,17 +65,16 @@ public class AmazonClient {
 
     public String uploadFile(MultipartFile multipartFile) {
 
-        String fileUrl = "";
+        String fileName = "";
         try {
             File file = convertMultiPartToFile(multipartFile);
-            String fileName = generateFileName(multipartFile);
-            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+            fileName = generateFileName(multipartFile);
             uploadFileTos3bucket(fileName, file);
             file.delete();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return fileUrl;
+        return fileName;
     }
 
     public String deleteFileFromS3Bucket(String fileUrl) {
@@ -84,5 +83,37 @@ public class AmazonClient {
         return "Successfully deleted";
     }
 
+    public File getFIle(String suffix, String bucketName, String fileName) throws IOException {
+        InputStream in = s3client.getObject(bucketName, fileName).getObjectContent();
 
+        File temp = new File("./temp");
+        if (!temp.exists()){
+            temp.mkdir();
+        }
+        File tmp = File.createTempFile("s3test", suffix, temp);
+        Files.copy(in, tmp.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        in.close();
+
+        return tmp;
+    }
+
+    public AmazonS3 getS3client() {
+        return s3client;
+    }
+
+    public String getEndpointUrl() {
+        return endpointUrl;
+    }
+
+    public String getBucketName() {
+        return bucketName;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
 }

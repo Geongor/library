@@ -5,6 +5,7 @@ import com.geongo.library.services.AmazonClient;
 import com.geongo.library.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -21,12 +23,12 @@ public class FileController {
 
     @Autowired
     BookService bookService;
-    /*
+
     @Autowired
     FileController(AmazonClient amazonClient) {
         this.amazonClient = amazonClient;
     }
-    */
+
 
 
     @PostMapping("/add_book")
@@ -50,5 +52,20 @@ public class FileController {
     @GetMapping("/add_book")
     public String addBookPage(Model model){
         return "add_book";
+    }
+
+    @GetMapping("/download")
+    public String downloadBookPage(Model model) throws IOException {
+
+        List<Book> books = bookService.getAllBooks();
+
+        for (Book book:books) {
+            book.setImage(amazonClient.getFIle(".png", amazonClient.getBucketName(), book.getImagePath()));
+            book.setFile(amazonClient.getFIle(".doc", amazonClient.getBucketName(), book.getFilePath()));
+        }
+
+        model.addAttribute("books", books);
+
+        return "library";
     }
 }
