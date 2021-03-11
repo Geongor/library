@@ -68,7 +68,7 @@ public class FileController {
         return "add_book";
     }
 
-    @GetMapping("/download")
+    @GetMapping("/library")
     public String downloadBookPage(Model model,
                                    @ModelAttribute Book filter) throws IOException {
 

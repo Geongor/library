@@ -59,7 +59,7 @@ public class BookService {
                 }
 
                 if (filter.getName() != null && filter.getName() != ""){
-                    finalPredicate = cb.and(finalPredicate, cb.equal(book.get("name"), filter.getName()));
+                    finalPredicate = cb.and(finalPredicate, cb.like(book.get("name"), "%" + filter.getName() + "%"));
                 }
 
                 /*
