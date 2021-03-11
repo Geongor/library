@@ -3,13 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <div>
-        <div th:each="book : ${books}" >
-            <img th:src="${book.getImage()}">
+    <div class="direction-row">
+        <div  th:each="book : ${books}" >
+            <img class="book-block" th:src="${book.getImage()}">
             <label th:text="${book.getName()}" ></label>
         </div>
+    </div>
+    <div>
+        <form method="get" action="/download">
+            <div><label>Введите имя </label><input type="text" name="name"></div>
+            <div><label>Автор: </label>
+                <select name="author">
+                    <option value="0">select author</option>
+                    <option th:each="author : ${authors}" th:utext="${author.getName()}"
+                            th:value="${author.getId()}"></option>
+                </select>
+            </div>
+            <div><label>Жанр: </label>
+                <input type="checkbox" name="genres"
+                       th:each="genre : ${genres}" th:utext="${genre.getName()}"
+                       th:value="${genre.getId()}">
+            </div>
+            <button type="submit">Применить</button>
+        </form>
     </div>
 </body>
 </html>

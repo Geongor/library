@@ -12,3 +12,15 @@ body {
     justify-content: space-around;
     flex-direction: column;
 }
+
+
+.direction-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.book-block{
+    width: 145px;
+    height: 200px;
+    border: solid black 1px;
+}

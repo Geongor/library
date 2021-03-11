@@ -2,21 +2,22 @@ package com.geongo.library.entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.File;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
 public class Book {
 
     private String name;
-    private String author;
     @Id
     private String filePath;
     private String imagePath;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private Author author;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Genre> genres;
     @Transient
     private File image;
     @Transient
@@ -26,9 +27,10 @@ public class Book {
     }
 
     @Autowired
-    public Book(String name, String author) {
+    public Book(String name, Author author, List<Genre> genres) {
         this.name = name;
         this.author = author;
+        this.genres = genres;
     }
 
 
@@ -40,11 +42,11 @@ public class Book {
         this.name = name;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
@@ -78,5 +80,13 @@ public class Book {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 }

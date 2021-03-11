@@ -1,8 +1,12 @@
 package com.geongo.library.controllers;
 
+import com.geongo.library.entity.Author;
 import com.geongo.library.entity.Book;
+import com.geongo.library.entity.Genre;
 import com.geongo.library.services.AmazonClient;
+import com.geongo.library.services.AuthorService;
 import com.geongo.library.services.BookService;
+import com.geongo.library.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
@@ -13,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +28,10 @@ public class FileController {
 
     @Autowired
     BookService bookService;
+    @Autowired
+    AuthorService authorService;
+    @Autowired
+    GenreService genreService;
 
     @Autowired
     FileController(AmazonClient amazonClient) {
@@ -32,16 +41,17 @@ public class FileController {
 
 
     @PostMapping("/add_book")
-    public String uploadFile(@RequestPart(value = "file") MultipartFile file,
-                             @RequestPart(value = "image") MultipartFile image,
-                             @RequestParam(value = "name") String name,
-                             @RequestParam(value = "author") String author) {
+    public String uploadFile(@RequestPart(value = "Mfile") MultipartFile Mfile,
+                             @RequestPart(value = "Mimage") MultipartFile Mimage,
+                             @ModelAttribute Book book,
+                             @RequestParam(value = "genres")List<Genre> genres,
+                             Model model) {
 
-        Book book = new Book(name, author);
-        bookService.saveBook(book, file, image);
+        book.setGenres(genres);
 
-        //this.amazonClient.uploadFile(file);
-        return "add_book";
+        bookService.saveBook(book, Mfile, Mimage);
+
+        return addBookPage(model);
     }
 
     @DeleteMapping("/deleteFile")
@@ -51,20 +61,37 @@ public class FileController {
 
     @GetMapping("/add_book")
     public String addBookPage(Model model){
+
+        model.addAttribute("authors", authorService.getAuthors());
+        model.addAttribute("genres", genreService.getGenres());
+
         return "add_book";
     }
 
     @GetMapping("/download")
-    public String downloadBookPage(Model model) throws IOException {
+    public String downloadBookPage(Model model,
+                                   @ModelAttribute Book filter) throws IOException {
 
-        List<Book> books = bookService.getAllBooks();
+        if (filter == null) filter = new Book();
+
+        List<Book> resultBooks = new ArrayList<>();
+        List<Book> books = bookService.getAllBooksByFilter(filter);
 
         for (Book book:books) {
+
             book.setImage(amazonClient.getFIle(".png", amazonClient.getBucketName(), book.getImagePath()));
             book.setFile(amazonClient.getFIle(".doc", amazonClient.getBucketName(), book.getFilePath()));
+
+            if ( filter.getGenres() == null || book.getGenres().containsAll(filter.getGenres())){
+                resultBooks.add(book);
+            }
         }
 
-        model.addAttribute("books", books);
+
+
+        model.addAttribute("authors", authorService.getAuthors());
+        model.addAttribute("genres", genreService.getGenres());
+        model.addAttribute("books", resultBooks);
 
         return "library";
     }

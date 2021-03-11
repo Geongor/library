@@ -92,6 +92,7 @@ public class AmazonClient {
         }
         File tmp = File.createTempFile("s3test", suffix, temp);
         Files.copy(in, tmp.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        tmp.deleteOnExit();
         in.close();
 
         return tmp;
