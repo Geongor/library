@@ -9,8 +9,7 @@ spring:
       max-request-size: 100MB
       location: ./temp
   profiles:
-    active: prod
+    active: dev
 server:
   port: 5000
-
 
