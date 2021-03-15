@@ -1,9 +1,12 @@
 package com.geongo.library.entity;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
@@ -14,7 +17,11 @@ public class User implements UserDetails, Comparable<User>, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Length(min = 3, max = 16)
+    @NotBlank
     private String username;
+    @Length(min = 3)
+    @NotBlank
     private String password;
     @Transient
     private String passwordConfirm;

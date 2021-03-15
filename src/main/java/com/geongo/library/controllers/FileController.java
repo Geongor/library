@@ -1,6 +1,5 @@
 package com.geongo.library.controllers;
 
-import com.geongo.library.entity.Author;
 import com.geongo.library.entity.Book;
 import com.geongo.library.entity.Genre;
 import com.geongo.library.services.AmazonClient;
@@ -8,23 +7,23 @@ import com.geongo.library.services.AuthorService;
 import com.geongo.library.services.BookService;
 import com.geongo.library.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+@Validated
 @Controller
 public class FileController {
 
-    private AmazonClient amazonClient;
+    private final AmazonClient amazonClient;
 
     @Autowired
     BookService bookService;
@@ -41,10 +40,10 @@ public class FileController {
 
 
     @PostMapping("/add_book")
-    public String uploadFile(@RequestPart(value = "Mfile") MultipartFile Mfile,
-                             @RequestPart(value = "Mimage") MultipartFile Mimage,
-                             @ModelAttribute Book book,
-                             @RequestParam(value = "genres")List<Genre> genres,
+    public String uploadFile(@RequestPart(value = "Mfile") @NotNull MultipartFile Mfile,
+                             @RequestPart(value = "Mimage") @NotNull MultipartFile Mimage,
+                             @Valid @ModelAttribute Book book,
+                             @RequestParam(value = "genres") @NotNull List<Genre> genres,
                              Model model) {
 
         book.setGenres(genres);

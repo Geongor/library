@@ -3,6 +3,8 @@ package com.geongo.library.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.util.List;
 
@@ -10,11 +12,13 @@ import java.util.List;
 @Table(name = "books")
 public class Book {
 
+    @NotBlank
     private String name;
     @Id
     private String filePath;
     private String imagePath;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @NotNull
     private Author author;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Genre> genres;

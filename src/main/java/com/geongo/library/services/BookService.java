@@ -1,21 +1,21 @@
 package com.geongo.library.services;
 
 import com.geongo.library.entity.Book;
-import com.geongo.library.entity.Genre;
 import com.geongo.library.repos.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Collection;
 import java.util.List;
 
 @Service()
+@Transactional
 public class BookService {
 
     private AmazonClient amazonClient;
