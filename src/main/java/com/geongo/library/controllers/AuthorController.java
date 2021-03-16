@@ -19,12 +19,12 @@ public class AuthorController {
     @Autowired
     AuthorService authorService;
 
-    @GetMapping("/add_author")
+    @GetMapping("/author/add")
     public String addAuthorPage(Model model){
         return "add_author";
     }
 
-    @PostMapping("/add_author")
+    @PostMapping("/author/add")
     public String addAuthor(Model model, @RequestParam(value = "name") @NotBlank String name){
         authorService.saveAuthor(new Author(name));
         return "add_author";

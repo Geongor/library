@@ -18,12 +18,12 @@ public class GenreController {
     @Autowired
     GenreService genreService;
 
-    @GetMapping("/add_genre")
+    @GetMapping("/genre/add")
     public String addGenrePage(Model model){
         return "add_genre";
     }
 
-    @PostMapping("/add_genre")
+    @PostMapping("/genre/add")
     public String addGenre(Model model,
                            @RequestParam(value = "name") @NotBlank String name,
                            @RequestParam(value = "description") String description){

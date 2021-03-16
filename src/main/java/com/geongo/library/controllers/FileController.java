@@ -39,7 +39,7 @@ public class FileController {
 
 
 
-    @PostMapping("/add_book")
+    @PostMapping("/book/add")
     public String uploadFile(@RequestPart(value = "Mfile") @NotNull MultipartFile Mfile,
                              @RequestPart(value = "Mimage") @NotNull MultipartFile Mimage,
                              @Valid @ModelAttribute Book book,
@@ -53,7 +53,7 @@ public class FileController {
         return addBookPage(model);
     }
 
-    @GetMapping("/add_book")
+    @GetMapping("/book/add")
     public String addBookPage(Model model){
 
         model.addAttribute("authors", authorService.getAuthors());
@@ -62,7 +62,7 @@ public class FileController {
         return "add_book";
     }
 
-    @GetMapping("/library")
+    @GetMapping("/book")
     public String downloadBookPage(Model model,
                                    @ModelAttribute Book filter) throws IOException {
 
