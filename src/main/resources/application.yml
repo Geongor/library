@@ -1,8 +1,9 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
+    generate-ddl: false
   servlet:
     multipart:
       max-file-size: 100MB

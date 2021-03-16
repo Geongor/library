@@ -53,11 +53,6 @@ public class FileController {
         return addBookPage(model);
     }
 
-    @DeleteMapping("/deleteFile")
-    public String deleteFile(@RequestPart(value = "url") String fileUrl) {
-        return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
-    }
-
     @GetMapping("/add_book")
     public String addBookPage(Model model){
 
@@ -93,5 +88,10 @@ public class FileController {
         model.addAttribute("books", resultBooks);
 
         return "library";
+    }
+
+    @DeleteMapping("/deleteFile")
+    public String deleteFile(@RequestPart(value = "url") String fileUrl) {
+        return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
     }
 }

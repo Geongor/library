@@ -8,4 +8,7 @@ amazonProperties:
   accessKey: AKIARBGCXCE43LRR42EO
   secretKey: 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
   bucketName: library-files-bucket
+flyway:
+  enabled: true
+  baseline-on-migrate: true
 
