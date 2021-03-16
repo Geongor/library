@@ -1,5 +1,6 @@
 package com.geongo.library.entity;
 
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Data
 public class User implements UserDetails, Comparable<User>, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +31,6 @@ public class User implements UserDetails, Comparable<User>, Serializable {
     private Set<Role> roles;
 
     public User() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override
@@ -64,9 +58,6 @@ public class User implements UserDetails, Comparable<User>, Serializable {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -77,27 +68,6 @@ public class User implements UserDetails, Comparable<User>, Serializable {
     public String getPassword() {
         return password;
     }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
 
     @Override
     public int compareTo(User o) {
