@@ -3,15 +3,14 @@ package com.geongo.library.services;
 import com.geongo.library.entity.Book;
 import com.geongo.library.repos.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Service()
@@ -42,8 +41,8 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public List<Book> getAllBooksByFilter(Book filter){
-        return bookRepository.findAll(matchesFilter(filter));
+    public Page<Book> getAllBooksByFilter(Book filter, Pageable pageable){
+        return bookRepository.findAll(matchesFilter(filter), pageable);
     }
 
     public static Specification<Book> matchesFilter(Book filter){
@@ -62,11 +61,12 @@ public class BookService {
                     finalPredicate = cb.and(finalPredicate, cb.like(book.get("name"), "%" + filter.getName() + "%"));
                 }
 
-                /*
+
                   if (filter.getGenres() != null && !filter.getGenres().isEmpty()){
-                    finalPredicate = cb.isTrue(book.get("genres").in(filter.getGenres()));
+                      Join join = book.join("genres");
+                      finalPredicate = cb.equal(join,filter.getGenres());
                   }
-                  */
+
 
                 return finalPredicate;
             }

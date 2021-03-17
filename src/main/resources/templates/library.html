@@ -13,7 +13,14 @@
         </div>
     </div>
     <div>
-        <form method="get" action="/library">
+        <th:block th:each="i: ${#numbers.sequence(0, books.totalPages - 1)}">
+            <span>
+             <a th:href="@{/book(page=${i})}">[[${i}+1]]</a>
+            </span>
+        </th:block>
+    </div>
+    <div>
+        <form method="get" action="/book">
             <div><label>Введите имя </label><input type="text" name="name"></div>
             <div><label>Автор: </label>
                 <select name="author">

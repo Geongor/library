@@ -7,6 +7,11 @@ import com.geongo.library.services.AuthorService;
 import com.geongo.library.services.BookService;
 import com.geongo.library.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -64,28 +69,22 @@ public class FileController {
 
     @GetMapping("/book")
     public String downloadBookPage(Model model,
-                                   @ModelAttribute Book filter) throws IOException {
+                                   @ModelAttribute Book filter,
+                                   @PageableDefault(size = 1) Pageable pageable) throws IOException {
 
         if (filter == null) filter = new Book();
 
-        List<Book> resultBooks = new ArrayList<>();
-        List<Book> books = bookService.getAllBooksByFilter(filter);
+        Page<Book> books = bookService.getAllBooksByFilter(filter, pageable);
 
         for (Book book:books) {
 
             book.setImage(amazonClient.getFIle(".png", amazonClient.getBucketName(), book.getImagePath()));
             book.setFile(amazonClient.getFIle(".doc", amazonClient.getBucketName(), book.getFilePath()));
-
-            if ( filter.getGenres() == null || book.getGenres().containsAll(filter.getGenres())){
-                resultBooks.add(book);
-            }
         }
-
-
 
         model.addAttribute("authors", authorService.getAuthors());
         model.addAttribute("genres", genreService.getGenres());
-        model.addAttribute("books", resultBooks);
+        model.addAttribute("books", books);
 
         return "library";
     }

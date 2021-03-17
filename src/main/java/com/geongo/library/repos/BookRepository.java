@@ -8,5 +8,6 @@ import javax.persistence.criteria.Predicate;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
+    
 
 }
