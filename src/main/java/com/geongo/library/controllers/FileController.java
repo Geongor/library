@@ -6,6 +6,9 @@ import com.geongo.library.services.AmazonClient;
 import com.geongo.library.services.AuthorService;
 import com.geongo.library.services.BookService;
 import com.geongo.library.services.GenreService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,7 +29,10 @@ import java.util.List;
 
 @Validated
 @Controller
+@Slf4j
 public class FileController {
+
+    //private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     private final AmazonClient amazonClient;
 
@@ -85,6 +91,8 @@ public class FileController {
         model.addAttribute("authors", authorService.getAuthors());
         model.addAttribute("genres", genreService.getGenres());
         model.addAttribute("books", books);
+
+        log.error("test msg");
 
         return "library";
     }
