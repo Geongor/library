@@ -3,14 +3,14 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-    <springProfile name="dev">
+    <springProfile name="prod">
 
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
 
-    <springProfile name="prod">
+    <springProfile name="dev">
 
         <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <!--file>app.log</file-->
@@ -32,7 +32,6 @@
         <logger name="com.geongo" level="DEBUG"/>
         <root level="ERROR">
             <appender-ref ref="FILE-ROLLING"/>
-
         </root>
     </springProfile>
 

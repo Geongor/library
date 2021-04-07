@@ -1,11 +1,20 @@
 spring:
   datasource:
-    url: jdbc:mysql://aacapoos0ekokx.c904hqasbuic.eu-west-3.rds.amazonaws.com/ebdb
-    username: libraryDbProd
-    password: somestrongpassword
+    url: jdbc:mysql://eu-cdbr-west-03.cleardb.net/heroku_42bd092ac8d298c?reconnect=true
+    username: b9e9446e3ccdaf
+    password: 261c48ef
 amazonProperties:
   endpointUrl: https://s3.eu-west-3.amazonaws.com
   accessKey: AKIARBGCXCE43LRR42EO
   secretKey: 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
-  bucketName: library-prod-bucket
+  bucketName: library-files-bucket
+flyway:
+  enabled: true
+  baseline-on-migrate: true
+keycloak:
+  realm: SpringBootKeycloak
+  auth-server-url: http://localhost:8080/auth
+  resource: login-app
+  public-client: true
+  principal-attribute: preferred_username
 

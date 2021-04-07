@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - F:/realm-export.json:/tmp/realm.json
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /tmp/realm.json
+      keycloak.profile.feature.upload_scripts: enabled
+    networks:
+      - keycloak-network
+#    hostname: keycloak
+  app:
+    image: spring-docker-simple:0.0.1
+    ports:
+      - 5000:5000
+    networks:
+      - keycloak-network
+networks:
+  keycloak-network:
+    name: keycloak-network

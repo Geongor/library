@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@Profile("dev")
+@Profile("test")
 public class WebSecurityDevConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserService userService;
@@ -51,8 +51,5 @@ public class WebSecurityDevConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/");
     }
 
-    @Autowired
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
-    }
+
 }
