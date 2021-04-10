@@ -1,5 +1,6 @@
 package com.geongo.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "books")
 @Data
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Book {
 
     @NotBlank

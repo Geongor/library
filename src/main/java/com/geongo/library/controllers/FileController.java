@@ -26,10 +26,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Validated
-@Controller
+@RestController
 @Slf4j
 public class FileController {
 
@@ -62,22 +64,23 @@ public class FileController {
 
         bookService.saveBook(book, Mfile, Mimage);
 
-        return addBookPage(model);
+        return "addBookPage(model)";
     }
 
     @GetMapping("/book/add")
-    public String addBookPage(Model model){
+    public Map<String, Object> addBookPage(Model model){
 
-        model.addAttribute("authors", authorService.getAuthors());
-        model.addAttribute("genres", genreService.getGenres());
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("authors", authorService.getAuthors());
+        resultMap.put("genres", genreService.getGenres());
 
-        return "add_book";
+        return resultMap;
     }
 
     @GetMapping("/book")
-    public String downloadBookPage(Model model,
-                                   @ModelAttribute Book filter,
-                                   @PageableDefault(size = 1) Pageable pageable) throws IOException {
+    public Map<String, Object> downloadBookPage(Model model,
+                                @ModelAttribute Book filter,
+                                @PageableDefault(size = 1) Pageable pageable) throws IOException {
 
         if (filter == null) filter = new Book();
 
@@ -89,13 +92,14 @@ public class FileController {
             book.setFile(amazonClient.getFIle(".doc", amazonClient.getBucketName(), book.getFilePath()));
         }
 
-        model.addAttribute("authors", authorService.getAuthors());
-        model.addAttribute("genres", genreService.getGenres());
-        model.addAttribute("books", books);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("authors", authorService.getAuthors());
+        resultMap.put("genres", genreService.getGenres());
+        resultMap.put("books", books);
 
         log.error("test msg");
 
-        return "library";
+        return resultMap;
     }
 
     @DeleteMapping("/deleteFile")

@@ -1,0 +1,1 @@
+docker run -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin -e KEYCLOAK_IMPORT=/tmp/example-realm.json -v /home/user/IdeaProjects/library/realm-export.json:/tmp/example-realm.json jboss/keycloak

@@ -1,5 +1,6 @@
 package com.geongo.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "genres")
 @Data
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
